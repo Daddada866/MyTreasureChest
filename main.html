@@ -306,3 +306,47 @@
     <div class="card">
       <h2>Quick tips</h2>
       <ul style="font-size:0.82rem; color: var(--muted); padding-left: 1.25rem; line-height: 1.6;">
+        <li>After opening a chest, note the chest ID (shown in My chests) for deposits.</li>
+        <li>Deposit (seed) sends ETH in one tx; use the Deposit tab and enter chest ID and amount.</li>
+        <li>Withdraw is only available after the lock period; Load my chests shows which are unlocked.</li>
+        <li>Global stats update when you click Refresh.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const BLOOM_ABI = [
+        "function openChest(uint8 tierIndex) external returns (uint256 chestId)",
+        "function seed(uint256 chestId) external payable",
+        "function withdraw(uint256 chestId) external",
+        "function getGlobalStats() external view returns (uint256 totalStaked, uint256 totalYield, uint256 treasuryBal, uint256 pendingHarvest)",
+        "function getTiersBatch(uint8 fromIndex, uint8 toIndex) external view returns (uint256[] memory lockBlocksArr, uint256[] memory weightNumerators, uint256[] memory totalSeedsInTierArr, uint256[] memory accumulatedYieldScaledArr, bool[] memory existsArr)",
+        "function tierCount() external view returns (uint8)",
+        "function getUserSummary(address user) external view returns (uint256 totalSeeds, uint256 totalPendingYield, uint256 activeChestCount)",
+        "function getChestsFullForUser(address user) external view returns (uint256[] memory chestIds, uint8[] memory tierIndices, uint256[] memory seedBalances, uint256[] memory unlockBlocks, uint256[] memory pendingYields)",
+        "function blocksUntilUnlock(address user, uint256 chestId) external view returns (uint256)",
+        "function isPaused() external view returns (bool)"
+      ];
+
+      let provider, signer, contractAddress = "", contract = null;
+
+      const walletEl = document.getElementById("wallet-addr");
+      const btnConnect = document.getElementById("btn-connect");
+      const contractInput = document.getElementById("contract-address");
+      const btnSetContract = document.getElementById("btn-set-contract");
+      const contractMsg = document.getElementById("contract-msg");
+      const actionMsg = document.getElementById("action-msg");
+      const statStaked = document.getElementById("stat-staked");
+      const statYield = document.getElementById("stat-yield");
+      const statTreasury = document.getElementById("stat-treasury");
+      const statPending = document.getElementById("stat-pending");
+      const statPaused = document.getElementById("stat-paused");
+      const tiersContainer = document.getElementById("tiers-container");
+      const chestsContainer = document.getElementById("chests-container");
+      const sumTotalSaved = document.getElementById("sum-total-saved");
+      const sumPendingYield = document.getElementById("sum-pending-yield");
+      const sumChestCount = document.getElementById("sum-chest-count");
+
+      function showMsg(container, text, type) {
+        container.innerHTML = text ? "<div class=\"msg " + type + "\">" + text + "</div>" : "";
