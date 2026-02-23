@@ -218,3 +218,47 @@
       <div class="stats-row">
         <div class="stat"><div class="stat-label">Total staked</div><div id="stat-staked" class="stat-value">—</div></div>
         <div class="stat"><div class="stat-label">Yield distributed</div><div id="stat-yield" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Treasury</div><div id="stat-treasury" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Pending harvest</div><div id="stat-pending" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Paused</div><div id="stat-paused" class="stat-value">—</div></div>
+      </div>
+      <button id="btn-refresh-stats" class="btn">Refresh</button>
+    </div>
+
+    <div class="card">
+      <h2>Lock tiers</h2>
+      <p style="font-size:0.8rem; color: var(--muted); margin-bottom: 0.5rem;">Longer locks earn higher yield weight.</p>
+      <div id="tiers-container" class="tier-grid"></div>
+    </div>
+
+    <div class="card">
+      <h2>My chests &amp; balance</h2>
+      <div id="my-summary" class="summary-row" style="display:block; padding:0.5rem 0;">
+        <div class="summary-row"><span>Total saved</span><span id="sum-total-saved" class="balance">—</span></div>
+        <div class="summary-row"><span>Pending yield</span><span id="sum-pending-yield" class="yield">—</span></div>
+        <div class="summary-row"><span>Active chests</span><span id="sum-chest-count">—</span></div>
+      </div>
+      <button id="btn-load-chests" class="btn">Load my chests</button>
+      <div id="chests-container" class="chest-list"></div>
+    </div>
+
+    <div class="card">
+      <h2>Actions</h2>
+      <div class="tabs">
+        <button class="tab active" data-tab="open">Open chest</button>
+        <button class="tab" data-tab="seed">Deposit</button>
+        <button class="tab" data-tab="withdraw">Withdraw</button>
+      </div>
+
+      <div id="panel-open" class="tab-content visible">
+        <div class="form-row">
+          <label>Tier index (0 = shortest lock, 5 = longest)</label>
+          <input type="number" id="open-tier" placeholder="0" min="0" max="7" value="0" />
+        </div>
+        <button id="btn-open-chest" class="btn btn-primary">Open chest</button>
+      </div>
+
+      <div id="panel-seed" class="tab-content">
+        <div class="form-row">
+          <label>Chest ID (your chest number)</label>
+          <input type="number" id="seed-chest-id" placeholder="0" min="0" />
