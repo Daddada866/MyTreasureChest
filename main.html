@@ -570,3 +570,34 @@
 
       document.getElementById("btn-withdraw").addEventListener("click", async function() {
         if (!contract || !signer) {
+          showMsg(actionMsg, "Connect wallet and set contract first.", "err");
+          return;
+        }
+        var chestId = parseInt(document.getElementById("withdraw-chest-id").value, 10);
+        if (isNaN(chestId) || chestId < 0) {
+          showMsg(actionMsg, "Enter a valid chest ID.", "err");
+          return;
+        }
+        showMsg(actionMsg, "Withdrawing…", "ok");
+        try {
+          var tx = await contract.withdraw(chestId);
+          await tx.wait();
+          showMsg(actionMsg, "Withdraw successful. Principal + yield sent to your wallet.", "ok");
+          loadMySummary();
+          refreshStats();
+          document.getElementById("btn-load-chests").click();
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Withdraw failed.", "err");
+        }
+      });
+
+      if (contractAddress) {
+        contractInput.value = contractAddress;
+        if (typeof ethers !== "undefined" && window.ethereum) {
+          connect();
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
