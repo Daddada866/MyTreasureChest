@@ -438,3 +438,47 @@
       document.getElementById("btn-refresh-stats").addEventListener("click", function() {
         refreshStats();
         loadTiers();
+        loadMySummary();
+      });
+
+      async function loadTiers() {
+        if (!contract) return;
+        tiersContainer.innerHTML = "";
+        try {
+          var count = await contract.tierCount();
+          if (Number(count) === 0) {
+            tiersContainer.innerHTML = "<p style=\"color:var(--muted); font-size:0.85rem;\">No tiers.</p>";
+            return;
+          }
+          var [lockBlocksArr, weightNumerators, totalSeedsInTierArr] = await contract.getTiersBatch(0, count);
+          var names = ["~32m", "~1h", "~4h", "~17h", "~2.8d", "~11d", "Tier 6", "Tier 7"];
+          for (var i = 0; i < lockBlocksArr.length; i++) {
+            var div = document.createElement("div");
+            div.className = "tier-card";
+            div.innerHTML =
+              "<div class=\"name\">Tier " + i + " " + (names[i] || "") + "</div>" +
+              "<div class=\"blocks\">Lock: " + lockBlocksArr[i].toString() + " blocks</div>" +
+              "<div class=\"seeds\">Seeds: " + formatEth(totalSeedsInTierArr[i]) + " ETH</div>";
+            tiersContainer.appendChild(div);
+          }
+        } catch (e) {
+          tiersContainer.innerHTML = "<p class=\"msg err\">" + (e.message || "Failed to load tiers") + "</p>";
+        }
+      }
+
+      async function loadMySummary() {
+        if (!contract || !signer) return;
+        try {
+          var addr = await signer.getAddress();
+          var [totalSeeds, totalPendingYield, activeChestCount] = await contract.getUserSummary(addr);
+          sumTotalSaved.textContent = formatEth(totalSeeds) + " ETH";
+          sumPendingYield.textContent = formatEth(totalPendingYield) + " ETH";
+          sumChestCount.textContent = activeChestCount.toString();
+        } catch (e) {
+          sumTotalSaved.textContent = sumPendingYield.textContent = sumChestCount.textContent = "—";
+        }
+      }
+
+      document.getElementById("btn-load-chests").addEventListener("click", async function() {
+        if (!contract || !signer) {
+          showMsg(actionMsg, "Connect wallet and set contract first.", "err");
