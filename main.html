@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyTreasureChest — Bloom DeFi Saving</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2229;
+      --panel: #232d38;
+      --border: #3d4a58;
+      --text: #e8ecf0;
+      --muted: #7a8a9a;
+      --gold: #e8b84a;
+      --gold-dim: #c49b3a;
+      --green: #5cb88a;
+      --amber: #d4a03a;
+      --radius: 10px;
+      --font-serif: "Playfair Display", Georgia, serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-serif);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      background-image:
+        radial-gradient(ellipse 80% 40% at 50% -10%, rgba(232, 184, 74, 0.08), transparent 50%),
+        radial-gradient(ellipse 60% 50% at 80% 90%, rgba(92, 184, 138, 0.06), transparent 45%);
+    }
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+    header {
