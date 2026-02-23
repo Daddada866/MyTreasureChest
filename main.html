@@ -394,3 +394,47 @@
         }
         try {
           provider = new ethers.BrowserProvider(window.ethereum);
+          var accounts = await provider.send("eth_requestAccounts", []);
+          if (!accounts.length) return;
+          signer = await provider.getSigner();
+          var addr = await signer.getAddress();
+          walletEl.textContent = addr.slice(0, 6) + "…" + addr.slice(-4);
+          btnConnect.textContent = "Connected";
+          btnConnect.disabled = true;
+          if (provider) {
+            var net = await provider.getNetwork();
+            document.getElementById("stat-chain").textContent = net ? net.chainId.toString() : "—";
+          }
+          document.getElementById("stat-contract-set").textContent = contractAddress ? "Yes" : "No";
+          if (contractAddress) {
+            contract = new ethers.Contract(contractAddress, BLOOM_ABI, signer);
+            refreshStats();
+            loadTiers();
+            loadMySummary();
+          }
+        } catch (e) {
+          showMsg(contractMsg, e.message || "Connection failed.", "err");
+        }
+      }
+
+      btnConnect.addEventListener("click", connect);
+
+      async function refreshStats() {
+        if (!contract) return;
+        try {
+          var [totalStaked, totalYield, treasuryBal, pendingHarvest] = await contract.getGlobalStats();
+          statStaked.textContent = formatEth(totalStaked) + " ETH";
+          statYield.textContent = formatEth(totalYield) + " ETH";
+          statTreasury.textContent = formatEth(treasuryBal) + " ETH";
+          statPending.textContent = formatEth(pendingHarvest) + " ETH";
+          var paused = await contract.isPaused();
+          statPaused.textContent = paused ? "Yes" : "No";
+        } catch (e) {
+          statStaked.textContent = statYield.textContent = statTreasury.textContent = statPending.textContent = "—";
+          statPaused.textContent = "—";
+        }
+      }
+
+      document.getElementById("btn-refresh-stats").addEventListener("click", function() {
+        refreshStats();
+        loadTiers();
