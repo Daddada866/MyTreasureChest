@@ -130,3 +130,47 @@
     }
     input::placeholder { color: var(--muted); }
     label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .form-row { margin-bottom: 0.65rem; }
+    .msg { font-size: 0.85rem; padding: 0.5rem; border-radius: var(--radius); margin-top: 0.5rem; }
+    .msg.err { background: rgba(239, 68, 68, 0.12); color: #f87171; }
+    .msg.ok { background: rgba(92, 184, 138, 0.12); color: var(--green); }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tab {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .tab.active { background: var(--panel); color: var(--gold); border-color: var(--gold); }
+    .tab:hover:not(.active) { color: var(--text); }
+    .tab-content { display: none; }
+    .tab-content.visible { display: block; }
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .tier-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      font-size: 0.8rem;
+    }
+    .tier-card .name { color: var(--gold); font-weight: 600; }
+    .tier-card .blocks { font-family: var(--font-mono); color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
+    .tier-card .seeds { font-family: var(--font-mono); color: var(--green); margin-top: 0.2rem; }
+    .chest-list { margin-top: 0.75rem; }
+    .chest-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.85rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .chest-item .row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.35rem; }
