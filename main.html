@@ -262,3 +262,47 @@
         <div class="form-row">
           <label>Chest ID (your chest number)</label>
           <input type="number" id="seed-chest-id" placeholder="0" min="0" />
+        </div>
+        <div class="form-row">
+          <label>Amount (ETH)</label>
+          <input type="text" id="seed-amount" placeholder="0.01" />
+        </div>
+        <button id="btn-seed" class="btn btn-primary">Deposit into chest</button>
+      </div>
+
+      <div id="panel-withdraw" class="tab-content">
+        <div class="form-row">
+          <label>Chest ID to withdraw (must be unlocked)</label>
+          <input type="number" id="withdraw-chest-id" placeholder="0" min="0" />
+        </div>
+        <button id="btn-withdraw" class="btn btn-primary">Withdraw chest</button>
+      </div>
+
+      <div id="action-msg" class="msg" style="margin-top:0.75rem;"></div>
+    </div>
+
+    <div class="card">
+      <h2>How it works</h2>
+      <p style="font-size:0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Bloom is a DeFi saving platform that puts your assets to work.</p>
+      <ul style="font-size:0.85rem; color: var(--text); padding-left: 1.25rem; line-height: 1.7;">
+        <li><strong>Open a chest</strong> — Choose a lock tier (0 = shortest, 5 = longest). Longer locks earn a higher share of yield.</li>
+        <li><strong>Deposit (seed)</strong> — Send ETH into your chest. Your principal is locked until the unlock block.</li>
+        <li><strong>Yield</strong> — A keeper harvests yield and allocates it to tiers by weight. Your chest accrues yield until you withdraw.</li>
+        <li><strong>Withdraw</strong> — After the lock period (unlock block), withdraw your principal plus accrued yield in one tx.</li>
+      </ul>
+      <p style="font-size:0.8rem; color: var(--muted); margin-top: 0.75rem;">Set the Bloom contract address above (deploy from bloom.sol), connect your wallet, then open chests and start saving.</p>
+      <p style="font-size:0.78rem; color: var(--muted); margin-top: 0.5rem;">Each chest has a fixed lock period (in blocks). You can open multiple chests in different tiers. Deposit into any chest anytime before withdrawal. Yield is distributed by the keeper via harvest and allocateHarvest; longer lock tiers receive a larger share of each harvest.</p>
+    </div>
+
+    <div class="card">
+      <h2>Network &amp; contract</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-label">Chain ID</div><div id="stat-chain" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Contract set</div><div id="stat-contract-set" class="stat-value">—</div></div>
+      </div>
+      <p style="font-size:0.78rem; color: var(--muted);">Ensure you are on the same network as the deployed Bloom contract.</p>
+    </div>
+
+    <div class="card">
+      <h2>Quick tips</h2>
+      <ul style="font-size:0.82rem; color: var(--muted); padding-left: 1.25rem; line-height: 1.6;">
