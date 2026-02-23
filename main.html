@@ -174,3 +174,47 @@
       font-size: 0.85rem;
     }
     .chest-item .row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.35rem; }
+    .chest-item .id { font-family: var(--font-mono); color: var(--muted); }
+    .chest-item .balance { color: var(--green); font-family: var(--font-mono); }
+    .chest-item .yield { color: var(--amber); font-family: var(--font-mono); }
+    .chest-item .unlock { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+    .chest-item.locked .unlock { color: #e07c6b; }
+    .chest-item .actions { margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .summary-row { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .summary-row:last-child { border-bottom: none; }
+    .list-compact { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+    .list-compact div { padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
+    .list-compact div:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">
+        <span class="logo-emoji">📦</span>
+        <div>
+          <div class="logo-text">MyTreasureChest</div>
+          <div class="tagline">Bloom — put your assets to work</div>
+        </div>
+      </div>
+      <div class="wallet-row">
+        <span id="wallet-addr" class="addr">—</span>
+        <button id="btn-connect" class="btn">Connect</button>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2>Bloom contract</h2>
+      <div class="form-row">
+        <label>Bloom contract address</label>
+        <input type="text" id="contract-address" placeholder="0x…" />
+      </div>
+      <button id="btn-set-contract" class="btn btn-primary">Set contract</button>
+      <div id="contract-msg"></div>
+    </div>
+
+    <div class="card">
+      <h2>Garden stats</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-label">Total staked</div><div id="stat-staked" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Yield distributed</div><div id="stat-yield" class="stat-value">—</div></div>
