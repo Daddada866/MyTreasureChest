@@ -526,3 +526,47 @@
           return;
         }
         var tier = parseInt(document.getElementById("open-tier").value, 10);
+        if (isNaN(tier) || tier < 0) tier = 0;
+        showMsg(actionMsg, "Opening chest…", "ok");
+        try {
+          var tx = await contract.openChest(tier);
+          await tx.wait();
+          showMsg(actionMsg, "Chest opened. Check your chest list for the new chest ID.", "ok");
+          loadMySummary();
+          document.getElementById("btn-load-chests").click();
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Open failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-seed").addEventListener("click", async function() {
+        if (!contract || !signer) {
+          showMsg(actionMsg, "Connect wallet and set contract first.", "err");
+          return;
+        }
+        var chestId = parseInt(document.getElementById("seed-chest-id").value, 10);
+        var amountStr = (document.getElementById("seed-amount").value || "").trim();
+        if (isNaN(chestId) || chestId < 0 || !amountStr) {
+          showMsg(actionMsg, "Enter chest ID and amount (ETH).", "err");
+          return;
+        }
+        var valueWei = ethers.parseEther(amountStr);
+        if (valueWei === 0n) {
+          showMsg(actionMsg, "Amount must be > 0.", "err");
+          return;
+        }
+        showMsg(actionMsg, "Depositing…", "ok");
+        try {
+          var tx = await contract.seed(chestId, { value: valueWei });
+          await tx.wait();
+          showMsg(actionMsg, "Deposit successful.", "ok");
+          loadMySummary();
+          refreshStats();
+          document.getElementById("btn-load-chests").click();
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Deposit failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-withdraw").addEventListener("click", async function() {
+        if (!contract || !signer) {
