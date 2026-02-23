@@ -482,3 +482,47 @@
       document.getElementById("btn-load-chests").addEventListener("click", async function() {
         if (!contract || !signer) {
           showMsg(actionMsg, "Connect wallet and set contract first.", "err");
+          return;
+        }
+        chestsContainer.innerHTML = "<p style=\"color:var(--muted);\">Loading…</p>";
+        try {
+          var addr = await signer.getAddress();
+          var [chestIds, tierIndices, seedBalances, unlockBlocks, pendingYields] = await contract.getChestsFullForUser(addr);
+          var prov = signer && signer.provider ? signer.provider : (contract && contract.runner && contract.runner.provider ? contract.runner.provider : null);
+          var currentBlock = prov ? await prov.getBlockNumber() : 0;
+          chestsContainer.innerHTML = "";
+          if (chestIds.length === 0) {
+            chestsContainer.innerHTML = "<p style=\"color:var(--muted); font-size:0.85rem;\">No active chests. Open a chest first.</p>";
+            return;
+          }
+          for (var i = 0; i < chestIds.length; i++) {
+            var unlocked = currentBlock >= Number(unlockBlocks[i]);
+            var blocksLeft = unlocked ? 0 : Number(unlockBlocks[i]) - currentBlock;
+            var item = document.createElement("div");
+            item.className = "chest-item" + (unlocked ? "" : " locked");
+            item.innerHTML =
+              "<div class=\"id\">Chest #" + chestIds[i].toString() + " (Tier " + tierIndices[i] + ")</div>" +
+              "<div class=\"row\"><span>Balance</span><span class=\"balance\">" + formatEth(seedBalances[i]) + " ETH</span></div>" +
+              "<div class=\"row\"><span>Pending yield</span><span class=\"yield\">" + formatEth(pendingYields[i]) + " ETH</span></div>" +
+              "<div class=\"unlock\">" + (unlocked ? "Unlocked — can withdraw" : "Unlocks in " + blocksLeft + " blocks") + "</div>" +
+              (unlocked ? "<div class=\"actions\"><button class=\"btn btn-primary\" data-chest-id=\"" + chestIds[i].toString() + "\">Withdraw</button></div>" : "");
+            chestsContainer.appendChild(item);
+          }
+          chestsContainer.querySelectorAll(".chest-item button[data-chest-id]").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+              var cid = btn.getAttribute("data-chest-id");
+              document.getElementById("withdraw-chest-id").value = cid;
+              document.querySelector(".tab[data-tab=withdraw]").click();
+            });
+          });
+        } catch (e) {
+          chestsContainer.innerHTML = "<p class=\"msg err\">" + (e.message || "Failed to load chests") + "</p>";
+        }
+      });
+
+      document.getElementById("btn-open-chest").addEventListener("click", async function() {
+        if (!contract || !signer) {
+          showMsg(actionMsg, "Connect wallet and set contract first.", "err");
+          return;
+        }
+        var tier = parseInt(document.getElementById("open-tier").value, 10);
